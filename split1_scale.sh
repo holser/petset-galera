@@ -6,8 +6,8 @@ desc "Let's wait when 3 Galera nodes are up"
 while [ $(kubectl get pods --namespace=demos -o=json \
   | jq '.items[] | select(.status.phase == "Running" )| .status.phase' \
   | grep -c Running) -lt 3 ]; do
-  run "kubectl get pods --namespace=demos -o=json | jq '.items[] | select(.status.phase == \"Running\" )| .status.phase' | grep -c Running"
-  sleep 5
+    run "kubectl get pods --namespace=demos -o=json | jq '.items[] | select(.status.phase == \"Running\" and .status.conditions[1].status == \"True\") | .status.phase' | grep -c Running"
+    sleep 10
 done
 desc "All nodes are up"
 
@@ -25,8 +25,8 @@ run "kubectl patch petset mysql -p '{\"spec\":{\"replicas\":5}}' --namespace=dem
 while [ $(kubectl get pods --namespace=demos -o=json \
   | jq '.items[] | select(.status.phase == "Running" )| .status.phase' \
   | grep -c Running) -lt 5 ]; do
-  run "kubectl get pods --namespace=demos -o=json | jq '.items[] | select(.status.phase == \"Running\" )| .status.phase' | grep -c Running"
-  sleep 5
+    run "kubectl get pods --namespace=demos -o=json | jq '.items[] | select(.status.phase == \"Running\" and .status.conditions[1].status == \"True\") | .status.phase' | grep -c Running"
+    sleep 5
 done
 desc "All nodes are up"
 

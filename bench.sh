@@ -31,13 +31,16 @@ fi
 
 sysbench \
   --test=oltp \
+  --db-driver=mysql \
   --mysql-db=test \
   --mysql-host="${DBHOST}" \
   --mysql-port=3306 \
   --mysql-table-engine=innodb \
   --oltp-test-mode=complex \
   --oltp-read-only=off \
-  --oltp-table-size=20000000 \
-  --max-requests=1000000 \
+  --oltp-table-size=200000 \
+  --oltp-auto-inc=off \
+  --max-requests=10000 \
+  --db-ps-mode=disable \
   --num-threads=16 \
   "${TASK}"
